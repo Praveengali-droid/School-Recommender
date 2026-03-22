@@ -100,7 +100,7 @@ main{display:grid;grid-template-columns:280px 1fr;gap:14px;align-items:start;pad
 .det-section ul li{margin-bottom:2px}
 .adm-badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;padding:3px 8px;border-radius:8px;font-weight:700}
 .adm-h{background:var(--green-l);color:var(--green)}.adm-m{background:var(--amber-l);color:var(--amber)}.adm-l{background:var(--red-l);color:var(--red)}
-.gem-badge{position:absolute;top:10px;right:12px;font-size:9px;padding:2px 7px;border-radius:8px;background:var(--amber-l);color:var(--amber);font-weight:700;letter-spacing:.3px}
+.gem-badge{font-size:9px;padding:2px 7px;border-radius:8px;background:var(--amber-l);color:var(--amber);font-weight:700;letter-spacing:.3px;display:inline-block;margin-top:4px}
 .cta-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
 .cta-btn{font-size:10px;padding:4px 10px;border-radius:4px;border:1px solid var(--border);background:#fff;cursor:pointer;color:var(--blue);font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:3px}
 .cta-btn:hover{background:var(--blue-l);border-color:var(--blue)}
@@ -234,11 +234,11 @@ footer a{color:var(--blue)}
 <footer>
 <div class="wrap">
 <p>Built by a parent, for parents. Data sourced from school websites, Ezyschooling, YellowSlate, SchoolMyKids, and public records.</p>
-<p style="margin-top:4px">Last updated: March 2026 · <a href="mailto:">Suggest a school or correction</a></p>
+<p style="margin-top:4px">Last updated: March 2026 · <a href="/cdn-cgi/l/email-protection#f6">Suggest a school or correction</a></p>
 </div>
 </footer>
 
-<script src="data.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="data.js"></script>
 <script src="enrichment.js"></script>
 <script>
 let activeCorridor = 'east';
@@ -250,6 +250,27 @@ const BOARD_OPTS=['ALL','CBSE','ICSE','Cambridge','IB','Montessori','CISCE'];
 const ADM_OPTS=['ALL','High only','Med-High+'];
 const CONF_OPTS=['ALL','High','Medium'];
 const LOCS=[...new Set(SCHOOLS.map(s=>s.z))].sort();
+
+const WT_COLORS=['#1a3a5c','#2d7d9a','#1b5e20','#4caf50','#e65100','#9c27b0','#c62828','#ff9800','#5d4037','#607d8b'];
+
+function updateWeightVis(){
+const tw=Object.values(W).reduce((a,b)=>a+b,0)||1;
+const bar=document.getElementById('wt-bar');
+const legend=document.getElementById('wt-legend');
+let barHTML='';
+let legHTML='';
+CRITERIA.forEach((c,i)=>{
+const pct=Math.round((W[c.id]/tw)*100);
+const pctEl=document.getElementById('pct_'+c.id);
+if(pctEl) pctEl.textContent=pct>0?pct+'%':'';
+if(W[c.id]>0){
+barHTML+=`<div class="wt-seg" style="width:${pct}%;background:${WT_COLORS[i]}" title="${c.n}: ${pct}%"><span class="wt-seg-label">${pct>=8?c.n.split(' ')[0]:''}</span></div>`;
+legHTML+=`<span class="wt-legend"><span class="wt-legend-dot" style="background:${WT_COLORS[i]}"></span>${c.n.split(' ')[0]} ${pct}%</span>`;
+}});
+bar.innerHTML=barHTML;
+legend.innerHTML=legHTML;
+document.getElementById('wt-total').textContent='Total: '+tw+' pts';
+}
 
 function init(){
 // Apply enrichment data
@@ -284,29 +305,8 @@ render();
 corGrid.appendChild(card);
 });
 
-const WT_COLORS=['#1a3a5c','#2d7d9a','#1b5e20','#4caf50','#e65100','#9c27b0','#c62828','#ff9800','#5d4037','#607d8b'];
-
 const sl=document.getElementById('sliders');
 CRITERIA.forEach((c,i)=>{const d=document.createElement('div');d.className='sg';d.innerHTML=`<div class="sl"><label title="${c.d}">${c.n}</label><input type="range" min="0" max="30" value="${c.w}" oninput="W['${c.id}']=+this.value;this.nextElementSibling.textContent=this.value;updateWeightVis();render()"><span class="sv">${c.w}</span><span class="pct" id="pct_${c.id}"></span></div>`;sl.appendChild(d)});
-
-function updateWeightVis(){
-const tw=Object.values(W).reduce((a,b)=>a+b,0)||1;
-const bar=document.getElementById('wt-bar');
-const legend=document.getElementById('wt-legend');
-let barHTML='';
-let legHTML='';
-CRITERIA.forEach((c,i)=>{
-const pct=Math.round((W[c.id]/tw)*100);
-const pctEl=document.getElementById('pct_'+c.id);
-if(pctEl) pctEl.textContent=pct>0?pct+'%':'';
-if(W[c.id]>0){
-barHTML+=`<div class="wt-seg" style="width:${pct}%;background:${WT_COLORS[i]}" title="${c.n}: ${pct}%"><span class="wt-seg-label">${pct>=8?c.n.split(' ')[0]:''}</span></div>`;
-legHTML+=`<span class="wt-legend"><span class="wt-legend-dot" style="background:${WT_COLORS[i]}"></span>${c.n.split(' ')[0]} ${pct}%</span>`;
-}});
-bar.innerHTML=barHTML;
-legend.innerHTML=legHTML;
-document.getElementById('wt-total').textContent='Total: '+tw+' pts';
-}
 
 const presets=document.getElementById('presets');
 [{n:'AI-age optimal',w:{af:15,co:22,st:18,ra:15,op:12,ac:5,di:5,inf:4,al:2,ad:2}},
@@ -367,7 +367,7 @@ const confCl=s.confidence==='High'?'conf-high':s.confidence==='Medium'?'conf-med
 const confBadge=s.confidence?`<span class="conf-badge ${confCl}">${s.confidence} confidence</span>`:'';
 const gRating=s.googleRating?`<span class="google-rating"><span class="star">★</span> ${s.googleRating}${s.googleReviewCount?' ('+s.googleReviewCount+')':''}</span>`:'';
 const rfCount=(s.redFlags||[]).length;
-const rfBadge=rfCount>0?`<span class="rf-badge">⚠ ${rfCount} flag${rfCount>1?'s':''}</span>`:'';
+const rfBadge=rfCount>0?`<span class="rf-badge" onclick="document.getElementById('${uid}').classList.add('open');this.closest('.card').querySelector('.toggle-det').textContent='▲ Hide details'">⚠ ${rfCount} flag${rfCount>1?'s':''}</span>`:'';
 
 // Red flags section
 const rfSection=rfCount>0?`<div class="det-rf"><h4>⚠ Red flags (${rfCount})</h4><ul>${s.redFlags.map(r=>'<li>'+r+'</li>').join('')}</ul></div>`:'';
@@ -379,8 +379,7 @@ const sigSection=(s.impliedSignals||[]).length>0?`<div class="det-signals"><h4>W
 const srcSection=(s.sources||[]).length>0?`<div class="det-scoring"><h4>How we scored this</h4>${s.scoringRationale&&s.scoringRationale.af?'<p style="font-size:11px;color:#555;line-height:1.6"><b>Affordability:</b> '+s.scoringRationale.af+'</p>':''}${s.scoringRationale&&s.scoringRationale.co?'<p style="font-size:11px;color:#555;line-height:1.6;margin-top:3px"><b>Conceptual learning:</b> '+s.scoringRationale.co+'</p>':''}${s.scoringRationale&&s.scoringRationale.ra?'<p style="font-size:11px;color:#555;line-height:1.6;margin-top:3px"><b>Ratio:</b> '+s.scoringRationale.ra+'</p>':''}${s.scoringRationale&&s.scoringRationale.inf?'<p style="font-size:11px;color:#555;line-height:1.6;margin-top:3px"><b>Infrastructure:</b> '+s.scoringRationale.inf+'</p>':''}${s.scoringRationale&&s.scoringRationale.st?'<p style="font-size:11px;color:#555;line-height:1.6;margin-top:3px"><b>STEM:</b> '+s.scoringRationale.st+'</p>':''}${s.scoringRationale&&s.scoringRationale.ad?'<p style="font-size:11px;color:#555;line-height:1.6;margin-top:3px"><b>Admission:</b> '+s.scoringRationale.ad+'</p>':''}
 <div class="src-list"><b>Sources:</b> ${s.sources.map(src=>'<span>· '+src+'</span>').join('')}</div></div>`:'';
 
-c.innerHTML=`${s.g?'<div class="gem-badge">Hidden gem</div>':''}
-<div class="card-row">
+c.innerHTML=`<div class="card-row">
 <div class="rank">${rk}</div>
 <div class="card-body">
 <div class="school-name">${s.n} ${confBadge} ${rfBadge}</div>
@@ -402,7 +401,7 @@ ${srcSection}
 ${s.url?`<div class="cta-row"><a class="cta-btn" href="${s.url}" target="_blank" rel="noopener">🌐 School website</a>${s.ph2?`<span class="cta-btn">📞 ${s.ph2}</span>`:''}</div>`:''}
 </div>
 </div>
-<div class="card-score"><div class="score-num">${s.score}</div><div class="score-lbl">/100</div></div>
+<div class="card-score"><div class="score-num">${s.score}</div><div class="score-lbl">/100</div>${s.g?'<div class="gem-badge">Hidden gem</div>':''}</div>
 </div>`;
 res.appendChild(c)});
 if(vis.length===0){res.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted)"><h3>No schools match your filters</h3><p>Try expanding your budget range or approach filters.</p></div>';}
@@ -414,12 +413,4 @@ document.querySelectorAll('.sg').forEach((sg,i)=>{const inp=sg.querySelector('in
 filters={budget:['<1L','1-1.5L'],approach:['Conceptual','Mixed-Conceptual','Mixed','Mixed-Concept','Alternative'],board:['ALL'],adm:['ALL'],loc:['ALL'],conf:['ALL']};
 document.querySelectorAll('#budget-chips .ch').forEach((c,i)=>c.classList.toggle('on',i<2));
 document.querySelectorAll('#approach-chips .ch').forEach(c=>c.classList.toggle('on',['Conceptual','Mixed-Conceptual','Mixed','Mixed-Concept','Alternative'].includes(c.dataset.val)));
-['board-chips','adm-chips','loc-chips','conf-chips'].forEach(id=>{document.querySelectorAll('#'+id+' .ch').forEach(c=>c.classList.toggle('on',c.dataset.val==='ALL'))});
-updateWeightVis();
-render();
-}
-
-init();
-</script>
-</body>
-</html>
+['board-chips','adm-chips','loc-chips','conf-chips'].forEach(id=>{document.querySelectorAll('#'+id+' .ch
