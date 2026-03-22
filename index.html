@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>East Bangalore School Ranker — Find the Best School for Your Child (2026-27)</title>
+<meta name="description" content="Compare 40+ schools in East Bangalore — Marathahalli, Whitefield, Kasturinagar, ORR corridor. Interactive weighted scoring, admission probability, fees comparison. Free tool for parents.">
+<meta property="og:title" content="East Bangalore School Ranker — 40+ Schools Compared">
+<meta property="og:description" content="Interactive tool to find the best school for your child. Compare CBSE, ICSE, Cambridge schools across Marathahalli to Whitefield. Weighted scoring by YOUR priorities.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="">
+<style>
+:root{--blue:#1a3a5c;--blue-l:#e8eef4;--green:#1b5e20;--green-l:#e8f5e9;--amber:#e65100;--amber-l:#fff8e1;--red:#c62828;--red-l:#fce4ec;--purple:#6a1b9a;--purple-l:#f3e5f5;--gray:#f8f7f4;--border:#e0e0e0;--text:#1a1a1a;--muted:#777;--radius:8px;--shadow:0 1px 3px rgba(0,0,0,.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--gray);color:var(--text);line-height:1.6}
+.wrap{max-width:1440px;margin:0 auto;padding:0 16px}
+header{background:#fff;border-bottom:1px solid var(--border);padding:16px 0}
+header h1{font-size:22px;color:var(--blue)}
+header p{font-size:13px;color:var(--muted);max-width:700px}
+.hero{background:linear-gradient(135deg,#1a3a5c 0%,#2d5f8a 100%);color:#fff;padding:32px 0;margin-bottom:16px}
+.hero h2{font-size:28px;font-weight:800;margin-bottom:8px}
+.hero p{font-size:15px;opacity:.85;max-width:650px}
+.hero-stats{display:flex;gap:16px;margin-top:16px;flex-wrap:wrap}
+.hero-stat{background:rgba(255,255,255,.15);border-radius:var(--radius);padding:10px 16px;text-align:center;min-width:100px}
+.hero-stat b{display:block;font-size:24px;font-weight:800}
+.hero-stat span{font-size:11px;opacity:.8}
+main{display:grid;grid-template-columns:280px 1fr;gap:14px;align-items:start;padding:16px 0}
+@media(max-width:900px){main{grid-template-columns:1fr}.sidebar{position:static!important}}
+.sidebar{background:#fff;border-radius:var(--radius);border:1px solid var(--border);padding:14px;position:sticky;top:12px;max-height:90vh;overflow-y:auto}
+.sidebar h3{font-size:12px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.5px;margin:12px 0 6px;padding-bottom:4px;border-bottom:1px solid #eee}
+.sidebar h3:first-child{margin-top:0}
+.sg{margin-bottom:5px}
+.sl{display:flex;align-items:center;gap:6px;font-size:11px}
+.sl label{width:95px;color:#555;flex-shrink:0;font-size:10px}
+.sl input[type=range]{flex:1;height:4px;-webkit-appearance:none;background:#e5e5e5;border-radius:2px;outline:none;cursor:pointer}
+.sl input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--blue);cursor:pointer;border:2px solid #fff;box-shadow:var(--shadow)}
+.sl .sv{min-width:24px;text-align:right;font-weight:700;color:var(--blue);font-size:10px}
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0}
+.ch{font-size:10px;padding:3px 8px;border-radius:14px;border:1px solid #d0d0d0;cursor:pointer;background:#fff;transition:.15s;user-select:none;white-space:nowrap}
+.ch.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.ch:hover{border-color:var(--blue)}
+.presets{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:4px 0}
+.preset{font-size:10px;padding:6px 8px;border-radius:var(--radius);border:1px solid var(--border);cursor:pointer;background:#fff;text-align:center;font-weight:600;color:var(--blue);transition:.15s}
+.preset:hover{background:var(--blue-l)}
+.reset-btn{font-size:11px;color:var(--blue);cursor:pointer;text-decoration:underline;border:none;background:none;padding:4px 0;margin-top:8px}
+.wt-vis{margin:8px 0 4px}
+.wt-vis-label{font-size:10px;color:var(--muted);margin-bottom:3px;display:flex;justify-content:space-between}
+.wt-vis-label b{color:var(--blue)}
+.wt-bar{display:flex;height:14px;border-radius:7px;overflow:hidden;background:#eee;position:relative}
+.wt-seg{height:100%;transition:width .3s ease;position:relative;min-width:0}
+.wt-seg:hover{opacity:.85}
+.wt-seg-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 2px}
+.wt-colors{display:flex;flex-wrap:wrap;gap:2px;margin-top:4px}
+.wt-legend{font-size:8px;display:flex;align-items:center;gap:2px;color:var(--muted)}
+.wt-legend-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.sl .pct{font-size:9px;color:var(--muted);min-width:28px;text-align:right}
+.wt-explain{font-size:9px;color:var(--muted);margin:4px 0 8px;padding:6px 8px;background:#f5f5f0;border-radius:4px;line-height:1.5}
+.content-area{min-width:0}
+.info-bar{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:center}
+.info-stat{background:#fff;border:1px solid var(--border);padding:6px 12px;border-radius:var(--radius);font-size:12px;display:flex;align-items:center;gap:4px}
+.info-stat b{color:var(--blue);font-size:16px}
+.sort-bar{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)}
+.sort-bar select{font-size:11px;padding:4px 8px;border-radius:4px;border:1px solid var(--border)}
+.results{display:flex;flex-direction:column;gap:8px}
+.card{background:#fff;border-radius:var(--radius);border:1px solid var(--border);padding:14px 16px;transition:.2s;position:relative;box-shadow:var(--shadow)}
+.card:hover{border-color:var(--blue);transform:translateY(-1px);box-shadow:0 3px 12px rgba(0,0,0,.1)}
+.card.t1{border-left:4px solid var(--green)}.card.t2{border-left:4px solid #0d47a1}.card.t3{border-left:4px solid var(--amber)}
+.card.over-budget{opacity:.75}
+.card-row{display:flex;align-items:flex-start;gap:10px}
+.rank{font-size:11px;font-weight:800;background:var(--blue);color:#fff;border-radius:50%;min-width:26px;height:26px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.card.t1 .rank{background:var(--green)}.card.t2 .rank{background:#0d47a1}.card.t3 .rank{background:var(--amber)}
+.card-body{flex:1;min-width:0}
+.school-name{font-size:16px;font-weight:700;color:var(--text)}
+.school-meta{font-size:11px;color:var(--muted);margin-top:2px}
+.school-meta b{color:var(--text)}
+.card-score{text-align:right;flex-shrink:0;padding-left:10px}
+.score-num{font-size:28px;font-weight:800;color:var(--blue);line-height:1}
+.score-lbl{font-size:9px;color:var(--muted)}
+.tags{display:flex;flex-wrap:wrap;gap:3px;margin:6px 0}
+.tag{font-size:9px;padding:2px 7px;border-radius:10px;font-weight:600}
+.tag-g{background:var(--green-l);color:var(--green)}.tag-b{background:var(--blue-l);color:var(--blue)}
+.tag-a{background:var(--amber-l);color:var(--amber)}.tag-r{background:var(--red-l);color:var(--red)}
+.tag-p{background:var(--purple-l);color:var(--purple)}
+.bars{display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:3px;margin:6px 0}
+.bar-i{font-size:10px}.bar-n{color:var(--muted);font-size:9px;margin-bottom:1px}
+.bar-t{height:5px;background:#eee;border-radius:3px;overflow:hidden}
+.bar-f{height:100%;border-radius:3px;transition:width .3s ease}
+.bar-f.hi{background:#4caf50}.bar-f.mi{background:#ff9800}.bar-f.lo{background:#ef5350}
+.toggle-det{font-size:10px;color:var(--blue);cursor:pointer;font-weight:600;margin-top:6px;user-select:none;display:inline-block}
+.toggle-det:hover{text-decoration:underline}
+.details{display:none;margin-top:10px;padding-top:10px;border-top:1px solid #eee}
+.details.open{display:block}
+.det-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:12px}
+@media(max-width:600px){.det-grid{grid-template-columns:1fr}}
+.det-section{background:#fafafa;border-radius:6px;padding:10px 12px}
+.det-section h4{font-size:11px;font-weight:700;color:var(--blue);margin-bottom:4px}
+.det-section p{font-size:11px;color:#555;line-height:1.6}
+.det-section ul{font-size:11px;color:#555;padding-left:16px;line-height:1.7}
+.det-section ul li{margin-bottom:2px}
+.adm-badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;padding:3px 8px;border-radius:8px;font-weight:700}
+.adm-h{background:var(--green-l);color:var(--green)}.adm-m{background:var(--amber-l);color:var(--amber)}.adm-l{background:var(--red-l);color:var(--red)}
+.gem-badge{position:absolute;top:10px;right:12px;font-size:9px;padding:2px 7px;border-radius:8px;background:var(--amber-l);color:var(--amber);font-weight:700;letter-spacing:.3px}
+.cta-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.cta-btn{font-size:10px;padding:4px 10px;border-radius:4px;border:1px solid var(--border);background:#fff;cursor:pointer;color:var(--blue);font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:3px}
+.cta-btn:hover{background:var(--blue-l);border-color:var(--blue)}
+.conf-badge{font-size:9px;padding:2px 7px;border-radius:8px;font-weight:700;letter-spacing:.3px;display:inline-flex;align-items:center;gap:3px}
+.conf-high{background:#e8f5e9;color:#1b5e20}.conf-medium{background:#fff8e1;color:#e65100}.conf-low{background:#fce4ec;color:#c62828}
+.google-rating{font-size:10px;color:#555;display:inline-flex;align-items:center;gap:2px}
+.google-rating .star{color:#f9a825}
+.rf-badge{font-size:9px;padding:2px 7px;border-radius:8px;background:#fce4ec;color:#c62828;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:3px}
+.rf-badge:hover{background:#f8bbd0}
+.det-rf{background:#fff5f5;border-left:3px solid var(--red);border-radius:6px;padding:10px 12px;margin-top:8px}
+.det-rf h4{color:var(--red)}
+.det-rf ul{font-size:11px;color:#555;padding-left:16px;line-height:1.7}
+.det-rf ul li{margin-bottom:3px}
+.det-scoring{background:#f0f4f8;border-left:3px solid var(--blue);border-radius:6px;padding:10px 12px;margin-top:8px}
+.det-scoring h4{color:var(--blue);margin-bottom:6px}
+.det-scoring .src-list{font-size:10px;color:var(--muted);line-height:1.6;margin-top:6px;padding-top:6px;border-top:1px solid #ddd}
+.det-scoring .src-list span{display:block;padding:1px 0}
+.det-signals{background:#f3e5f5;border-left:3px solid var(--purple);border-radius:6px;padding:10px 12px;margin-top:8px}
+.det-signals h4{color:var(--purple);margin-bottom:6px}
+.signal-item{font-size:10px;color:#555;margin-bottom:6px;padding:4px 0;border-bottom:1px dashed #e0d4e8}
+.signal-item:last-child{border-bottom:none}
+.signal-obs{font-weight:600;color:var(--purple)}
+.signal-imp{color:#777;font-style:italic}
+.note{font-size:10px;color:var(--muted);margin-top:8px;font-style:italic;line-height:1.6}
+footer{background:#fff;border-top:1px solid var(--border);padding:24px 0;margin-top:32px;text-align:center}
+footer p{font-size:12px;color:var(--muted)}
+footer a{color:var(--blue)}
+.corridor-bar{background:#fff;border-bottom:1px solid var(--border);padding:12px 0}
+.corridor-bar h3{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.cor-grid{display:flex;gap:8px;flex-wrap:wrap}
+.cor-card{padding:10px 16px;border-radius:var(--radius);border:2px solid var(--border);cursor:pointer;transition:.2s;min-width:140px;flex:1;max-width:220px}
+.cor-card:hover{border-color:var(--blue);background:var(--blue-l)}
+.cor-card.active{border-color:var(--blue);background:var(--blue-l);box-shadow:0 0 0 1px var(--blue)}
+.cor-card.disabled{opacity:.45;cursor:default;border-style:dashed}
+.cor-card.disabled:hover{border-color:var(--border);background:#fff}
+.cor-card .cor-name{font-size:13px;font-weight:700;color:var(--blue)}
+.cor-card .cor-sub{font-size:10px;color:var(--muted);margin-top:2px}
+.cor-card .cor-count{font-size:10px;font-weight:700;margin-top:4px}
+.cor-card .cor-count b{color:var(--blue)}
+.cor-card.disabled .cor-count{color:var(--amber)}
+.cor-card.disabled .cor-name{color:var(--muted)}
+.compare-bar{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid var(--blue);padding:10px 16px;z-index:100;box-shadow:0 -2px 10px rgba(0,0,0,.1)}
+.compare-bar.active{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+.compare-chip{font-size:11px;background:var(--blue-l);color:var(--blue);padding:4px 10px;border-radius:14px;display:flex;align-items:center;gap:4px}
+.compare-chip .x{cursor:pointer;font-weight:700;margin-left:4px}
+.compare-btn{font-size:12px;padding:6px 16px;border-radius:var(--radius);background:var(--blue);color:#fff;border:none;cursor:pointer;font-weight:700}
+.site-nav{background:#fff;border-bottom:1px solid var(--border);padding:14px 0}
+.site-nav .wrap{display:flex;align-items:center;gap:16px;max-width:1440px}
+.nav-brand{font-size:18px;font-weight:800;color:var(--blue);text-decoration:none}
+.nav-link{font-size:13px;color:var(--muted);text-decoration:none;padding:4px 0;border-bottom:2px solid transparent;transition:.2s}
+.nav-link:hover,.nav-link.active{color:var(--blue);border-bottom-color:var(--blue)}
+.nav-sep{color:var(--border)}
+</style>
+</head>
+<body>
+
+<div class="site-nav">
+<div class="wrap">
+<a href="index.html" class="nav-brand">School Ranker</a>
+<span class="nav-sep">·</span>
+<a href="index.html" class="nav-link active">Compare schools</a>
+<a href="methodology.html" class="nav-link">Our research</a>
+</div>
+</div>
+
+<div class="hero">
+<div class="wrap">
+<h2>Find the right school for your child</h2>
+<p id="hero-sub">40 schools across East Bangalore — Marathahalli, Kasturinagar, ORR, Whitefield, Hoskote. Weighted scoring that adapts to YOUR priorities. Class 1 admission, 2026-27.</p>
+<div class="hero-stats" id="hero-stats">
+<div class="hero-stat"><b id="hs-count">40</b><span>Schools compared</span></div>
+<div class="hero-stat"><b>10</b><span>Parameters scored</span></div>
+<div class="hero-stat"><b>₹50K-3L</b><span>Fee range covered</span></div>
+<div class="hero-stat"><b>7</b><span>Boards included</span></div>
+</div>
+</div>
+</div>
+
+<div class="corridor-bar">
+<div class="wrap">
+<h3>Select your area</h3>
+<div class="cor-grid" id="cor-grid"></div>
+</div>
+</div>
+
+<div class="wrap">
+<main>
+<div class="sidebar">
+<h3>Your priorities</h3>
+<div class="wt-explain">Weights are relative — a higher number means more important to you. The bar below shows each parameter's effective share of your total weighting.</div>
+<div class="wt-vis" id="wt-vis">
+<div class="wt-vis-label"><span>Effective weight distribution</span><b id="wt-total">100%</b></div>
+<div class="wt-bar" id="wt-bar"></div>
+<div class="wt-colors" id="wt-legend"></div>
+</div>
+<div id="sliders"></div>
+
+<h3>Quick presets</h3>
+<div class="presets" id="presets"></div>
+
+<h3>Budget</h3>
+<div class="chips" id="budget-chips"></div>
+
+<h3>Teaching approach</h3>
+<div class="chips" id="approach-chips"></div>
+
+<h3>Board</h3>
+<div class="chips" id="board-chips"></div>
+
+<h3>Admission chance</h3>
+<div class="chips" id="adm-chips"></div>
+
+<h3>Data confidence</h3>
+<div class="chips" id="conf-chips"></div>
+
+<h3>Location</h3>
+<div class="chips" id="loc-chips"></div>
+
+<div style="margin-top:10px"><button class="reset-btn" onclick="resetAll()">↺ Reset all to defaults</button></div>
+
+<p class="note">Scores are relative estimates from public data (March 2026). Admission probability modeled for: Indian nationals, Klay preschool background, no sibling/alumni priority, Class 1 entry. Always verify fees and availability directly with schools.</p>
+</div>
+
+<div class="content-area">
+<div class="info-bar" id="info-bar"></div>
+<div class="results" id="results"></div>
+</div>
+</main>
+</div>
+
+<footer>
+<div class="wrap">
+<p>Built by a parent, for parents. Data sourced from school websites, Ezyschooling, YellowSlate, SchoolMyKids, and public records.</p>
+<p style="margin-top:4px">Last updated: March 2026 · <a href="mailto:">Suggest a school or correction</a></p>
+</div>
+</footer>
+
+<script src="data.js"></script>
+<script src="enrichment.js"></script>
+<script>
+let activeCorridor = 'east';
+let W={};CRITERIA.forEach(c=>W[c.id]=c.w);
+let filters={budget:['<1L','1-1.5L'],approach:['Conceptual','Mixed-Conceptual','Mixed','Mixed-Concept','Alternative'],board:['ALL'],adm:['ALL'],loc:['ALL'],conf:['ALL']};
+const BUDGET_OPTS=['<1L','1-1.5L','1.5-2L','2-2.5L','2.5L+'];
+const APPROACH_OPTS=[...new Set(SCHOOLS.map(s=>s.a))];
+const BOARD_OPTS=['ALL','CBSE','ICSE','Cambridge','IB','Montessori','CISCE'];
+const ADM_OPTS=['ALL','High only','Med-High+'];
+const CONF_OPTS=['ALL','High','Medium'];
+const LOCS=[...new Set(SCHOOLS.map(s=>s.z))].sort();
+
+function init(){
+// Apply enrichment data
+if(typeof applyEnrichment==='function') applyEnrichment();
+
+// Build corridor selector
+const corGrid=document.getElementById('cor-grid');
+CORRIDORS.forEach(cor=>{
+const card=document.createElement('div');
+card.className='cor-card'+(cor.id===activeCorridor?' active':'')+(cor.active?'':' disabled');
+const schoolCount=SCHOOLS.filter(s=>s.cor===cor.id).length;
+const countLabel=cor.active?`<b>${schoolCount}</b> schools`:'Coming soon';
+card.innerHTML=`<div class="cor-name">${cor.name}</div><div class="cor-sub">${cor.sub}</div><div class="cor-count">${countLabel}</div>`;
+card.onclick=()=>{
+if(!cor.active)return;
+activeCorridor=cor.id;
+corGrid.querySelectorAll('.cor-card').forEach(c=>c.classList.remove('active'));
+card.classList.add('active');
+// Update hero
+const selCor=CORRIDORS.find(c=>c.id===activeCorridor);
+const corSchools=SCHOOLS.filter(s=>s.cor===activeCorridor);
+document.getElementById('hero-sub').textContent=`${corSchools.length} schools across ${selCor.name} — ${selCor.sub}. Weighted scoring that adapts to YOUR priorities. Class 1 admission, 2026-27.`;
+document.getElementById('hs-count').textContent=corSchools.length;
+// Update location chips for this corridor
+const locChips=document.getElementById('loc-chips');
+locChips.innerHTML='';
+const newLocs=['ALL',...new Set(corSchools.map(s=>s.z))].sort();
+filters.loc=['ALL'];
+mkChips('loc-chips',newLocs,['ALL'],'loc');
+render();
+};
+corGrid.appendChild(card);
+});
+
+const WT_COLORS=['#1a3a5c','#2d7d9a','#1b5e20','#4caf50','#e65100','#9c27b0','#c62828','#ff9800','#5d4037','#607d8b'];
+
+const sl=document.getElementById('sliders');
+CRITERIA.forEach((c,i)=>{const d=document.createElement('div');d.className='sg';d.innerHTML=`<div class="sl"><label title="${c.d}">${c.n}</label><input type="range" min="0" max="30" value="${c.w}" oninput="W['${c.id}']=+this.value;this.nextElementSibling.textContent=this.value;updateWeightVis();render()"><span class="sv">${c.w}</span><span class="pct" id="pct_${c.id}"></span></div>`;sl.appendChild(d)});
+
+function updateWeightVis(){
+const tw=Object.values(W).reduce((a,b)=>a+b,0)||1;
+const bar=document.getElementById('wt-bar');
+const legend=document.getElementById('wt-legend');
+let barHTML='';
+let legHTML='';
+CRITERIA.forEach((c,i)=>{
+const pct=Math.round((W[c.id]/tw)*100);
+const pctEl=document.getElementById('pct_'+c.id);
+if(pctEl) pctEl.textContent=pct>0?pct+'%':'';
+if(W[c.id]>0){
+barHTML+=`<div class="wt-seg" style="width:${pct}%;background:${WT_COLORS[i]}" title="${c.n}: ${pct}%"><span class="wt-seg-label">${pct>=8?c.n.split(' ')[0]:''}</span></div>`;
+legHTML+=`<span class="wt-legend"><span class="wt-legend-dot" style="background:${WT_COLORS[i]}"></span>${c.n.split(' ')[0]} ${pct}%</span>`;
+}});
+bar.innerHTML=barHTML;
+legend.innerHTML=legHTML;
+document.getElementById('wt-total').textContent='Total: '+tw+' pts';
+}
+
+const presets=document.getElementById('presets');
+[{n:'AI-age optimal',w:{af:15,co:22,st:18,ra:15,op:12,ac:5,di:5,inf:4,al:2,ad:2}},
+{n:'Budget first',w:{af:28,co:12,st:8,ra:10,op:8,ac:10,di:8,inf:5,al:3,ad:8}},
+{n:'Academics focus',w:{af:5,co:8,st:12,ra:5,op:5,ac:25,di:10,inf:12,al:15,ad:3}},
+{n:'Progressive/open',w:{af:10,co:25,st:10,ra:12,op:25,ac:3,di:5,inf:5,al:2,ad:3}},
+{n:'Safe & reliable',w:{af:12,co:10,st:10,ra:8,op:8,ac:12,di:15,inf:10,al:10,ad:5}},
+{n:'Best ratio',w:{af:10,co:15,st:10,ra:25,op:10,ac:8,di:7,inf:5,al:3,ad:7}}
+].forEach(p=>{const b=document.createElement('div');b.className='preset';b.textContent=p.n;b.onclick=()=>{W={...p.w};document.querySelectorAll('.sg').forEach((sg,i)=>{const inp=sg.querySelector('input');const sp=sg.querySelector('.sv');inp.value=W[CRITERIA[i].id];sp.textContent=W[CRITERIA[i].id]});updateWeightVis();render()};presets.appendChild(b)});
+
+mkChips('budget-chips',BUDGET_OPTS,filters.budget,'budget');
+mkChips('approach-chips',APPROACH_OPTS,filters.approach,'approach');
+mkChips('board-chips',BOARD_OPTS,['ALL'],'board');
+mkChips('adm-chips',ADM_OPTS,['ALL'],'adm');
+mkChips('conf-chips',CONF_OPTS,['ALL'],'conf');
+mkChips('loc-chips',['ALL',...LOCS],['ALL'],'loc');
+updateWeightVis();
+render();
+}
+
+function mkChips(id,opts,defaults,key){
+const el=document.getElementById(id);
+opts.forEach(o=>{const c=document.createElement('div');c.className='ch'+(defaults.includes(o)?' on':'');c.textContent=o;c.dataset.val=o;
+c.onclick=()=>{
+if(o==='ALL'){el.querySelectorAll('.ch').forEach(x=>x.classList.remove('on'));c.classList.add('on');filters[key]=['ALL'];}
+else{el.querySelector('[data-val="ALL"]')?.classList.remove('on');c.classList.toggle('on');filters[key]=Array.from(el.querySelectorAll('.on')).map(x=>x.dataset.val).filter(v=>v!=='ALL');if(filters[key].length===0){el.querySelector('[data-val="ALL"]')?.classList.add('on');filters[key]=['ALL'];}}
+render();};el.appendChild(c)});
+}
+
+function feeMatch(f){if(filters.budget.includes('ALL'))return true;let ok=false;filters.budget.forEach(b=>{if(b==='<1L'&&f<1)ok=true;if(b==='1-1.5L'&&f>=1&&f<=1.5)ok=true;if(b==='1.5-2L'&&f>1.5&&f<=2)ok=true;if(b==='2-2.5L'&&f>2&&f<=2.5)ok=true;if(b==='2.5L+'&&f>2.5)ok=true});return ok}
+function appMatch(a){if(filters.approach.includes('ALL'))return true;return filters.approach.includes(a)}
+function boardMatch(b){if(filters.board.includes('ALL'))return true;return filters.board.some(fb=>b.toLowerCase().includes(fb.toLowerCase()))}
+function admMatch(ap){if(filters.adm.includes('ALL'))return true;if(filters.adm.includes('High only'))return ap==='High';if(filters.adm.includes('Med-High+'))return ap==='High'||ap==='Med-High';return true}
+function locMatch(z){if(filters.loc.includes('ALL'))return true;return filters.loc.includes(z)}
+function confMatch(c){if(!filters.conf||filters.conf.includes('ALL'))return true;const conf=c||'Low';return filters.conf.includes(conf)}
+
+function calcScore(s){const tw=Object.values(W).reduce((a,b)=>a+b,0)||1;let sc=0;CRITERIA.forEach(p=>{sc+=(s.s[p.id]||0)*(W[p.id]/tw)});return Math.round(sc*10)/10}
+
+function render(){
+const scored=SCHOOLS.filter(s=>s.cor===activeCorridor).map(s=>({...s,score:calcScore(s),vis:feeMatch(s.f)&&appMatch(s.a)&&boardMatch(s.b)&&admMatch(s.ap)&&locMatch(s.z)&&confMatch(s.confidence)}));
+scored.sort((a,b)=>b.score-a.score);
+const vis=scored.filter(s=>s.vis);
+const ib=document.getElementById('info-bar');
+const corTotal=SCHOOLS.filter(s=>s.cor===activeCorridor).length;
+ib.innerHTML=`<div class="info-stat"><b>${vis.length}</b>/<span>${corTotal} schools</span></div><div class="info-stat"><b>${vis.filter(s=>s.f<=1.5).length}</b><span>under ₹1.5L</span></div><div class="info-stat"><b>${vis.filter(s=>s.ap==='High').length}</b><span>high admission odds</span></div><div class="info-stat"><b>${vis.filter(s=>s.confidence==='High').length}</b><span>high confidence</span></div>`;
+const res=document.getElementById('results');res.innerHTML='';let rk=0;
+scored.forEach(s=>{if(!s.vis)return;rk++;
+const c=document.createElement('div');
+c.className='card'+(rk===1?' t1':'')+(rk===2?' t2':'')+(rk===3?' t3':'')+(s.f>1.5?' over-budget':'');
+const tw=Object.values(W).reduce((a,b)=>a+b,0)||1;
+const bars=CRITERIA.filter(p=>W[p.id]>0).map(p=>{const v=s.s[p.id]||0;const cl=v>=75?'hi':v>=50?'mi':'lo';return`<div class="bar-i"><div class="bar-n">${p.n}</div><div class="bar-t"><div class="bar-f ${cl}" style="width:${v}%"></div></div></div>`}).join('');
+const tags=s.t.map((t,i)=>`<span class="tag tag-${s.tc[i]}">${t}</span>`).join('');
+const admCl=s.ap==='High'?'adm-h':s.ap.includes('Low')?'adm-l':'adm-m';
+const uid='d'+rk;
+
+// Enrichment UI elements
+const confCl=s.confidence==='High'?'conf-high':s.confidence==='Medium'?'conf-medium':'conf-low';
+const confBadge=s.confidence?`<span class="conf-badge ${confCl}">${s.confidence} confidence</span>`:'';
+const gRating=s.googleRating?`<span class="google-rating"><span class="star">★</span> ${s.googleRating}${s.googleReviewCount?' ('+s.googleReviewCount+')':''}</span>`:'';
+const rfCount=(s.redFlags||[]).length;
+const rfBadge=rfCount>0?`<span class="rf-badge">⚠ ${rfCount} flag${rfCount>1?'s':''}</span>`:'';
+
+// Red flags section
+const rfSection=rfCount>0?`<div class="det-rf"><h4>⚠ Red flags (${rfCount})</h4><ul>${s.redFlags.map(r=>'<li>'+r+'</li>').join('')}</ul></div>`:'';
+
+// Implied signals section
+const sigSection=(s.impliedSignals||[]).length>0?`<div class="det-signals"><h4>What we read between the lines</h4>${s.impliedSignals.map(sig=>`<div class="signal-item"><span class="signal-obs">${sig.signal}</span><br><span class="signal-imp">→ ${sig.implies}</span> · <span style="font-size:9px;color:var(--blue);font-weight:600">${sig.impact}</span></div>`).join('')}</div>`:'';
+
+// Sources section
+const srcSection=(s.sources||[]).length>0?`<div class="det-scoring"><h4>How we scored this</h4>${s.scoringRationale&&s.scoringRationale.af?'<p style="font-size:11px;color:#555;line-height:1.6"><b>Affordability:</b> '+s.scoringRationale.af+'</p>':''}${s.scoringRationale&&s.scoringRationale.co?'<p style="font-size:11px;color:#555;line-height:1.6;margin-top:3px"><b>Conceptual learning:</b> '+s.scoringRationale.co+'</p>':''}${s.scoringRationale&&s.scoringRationale.ra?'<p style="font-size:11px;color:#555;line-height:1.6;margin-top:3px"><b>Ratio:</b> '+s.scoringRationale.ra+'</p>':''}${s.scoringRationale&&s.scoringRationale.inf?'<p style="font-size:11px;color:#555;line-height:1.6;margin-top:3px"><b>Infrastructure:</b> '+s.scoringRationale.inf+'</p>':''}${s.scoringRationale&&s.scoringRationale.st?'<p style="font-size:11px;color:#555;line-height:1.6;margin-top:3px"><b>STEM:</b> '+s.scoringRationale.st+'</p>':''}${s.scoringRationale&&s.scoringRationale.ad?'<p style="font-size:11px;color:#555;line-height:1.6;margin-top:3px"><b>Admission:</b> '+s.scoringRationale.ad+'</p>':''}
+<div class="src-list"><b>Sources:</b> ${s.sources.map(src=>'<span>· '+src+'</span>').join('')}</div></div>`:'';
+
+c.innerHTML=`${s.g?'<div class="gem-badge">Hidden gem</div>':''}
+<div class="card-row">
+<div class="rank">${rk}</div>
+<div class="card-body">
+<div class="school-name">${s.n} ${confBadge} ${rfBadge}</div>
+<div class="school-meta">${s.l} · ${s.b} · Ratio ${s.r} · Est. ${s.y} · <b>${s.fl}/yr</b>${s.f>1.5?' <span style="color:var(--red)">over ₹1.5L</span>':''} · <span class="adm-badge ${admCl}">Admission: ${s.ap}</span> ${gRating}</div>
+<div class="tags">${tags}</div>
+<div class="bars">${bars}</div>
+<span class="toggle-det" onclick="document.getElementById('${uid}').classList.toggle('open');this.textContent=document.getElementById('${uid}').classList.contains('open')?'▲ Hide details':'▼ Details + admission analysis'">▼ Details + admission analysis</span>
+<div class="details" id="${uid}">
+<div class="det-grid">
+<div class="det-section"><h4>Philosophy & approach</h4><p>${s.ph}</p></div>
+<div class="det-section"><h4>Admission analysis (your profile)</h4><p>${s.adm}</p></div>
+<div class="det-section"><h4>Strengths</h4><ul>${(s.pros||[]).map(p=>'<li>'+p+'</li>').join('')}</ul></div>
+<div class="det-section"><h4>Trade-offs</h4><ul>${(s.cons||[]).map(p=>'<li>'+p+'</li>').join('')}</ul></div>
+</div>
+<div class="det-section" style="margin-top:8px"><h4>Best for</h4><p>${s.bf}</p></div>
+${rfSection}
+${sigSection}
+${srcSection}
+${s.url?`<div class="cta-row"><a class="cta-btn" href="${s.url}" target="_blank" rel="noopener">🌐 School website</a>${s.ph2?`<span class="cta-btn">📞 ${s.ph2}</span>`:''}</div>`:''}
+</div>
+</div>
+<div class="card-score"><div class="score-num">${s.score}</div><div class="score-lbl">/100</div></div>
+</div>`;
+res.appendChild(c)});
+if(vis.length===0){res.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted)"><h3>No schools match your filters</h3><p>Try expanding your budget range or approach filters.</p></div>';}
+}
+
+function resetAll(){
+CRITERIA.forEach(c=>W[c.id]=c.w);
+document.querySelectorAll('.sg').forEach((sg,i)=>{const inp=sg.querySelector('input');const sp=sg.querySelector('.sv');inp.value=CRITERIA[i].w;sp.textContent=CRITERIA[i].w});
+filters={budget:['<1L','1-1.5L'],approach:['Conceptual','Mixed-Conceptual','Mixed','Mixed-Concept','Alternative'],board:['ALL'],adm:['ALL'],loc:['ALL'],conf:['ALL']};
+document.querySelectorAll('#budget-chips .ch').forEach((c,i)=>c.classList.toggle('on',i<2));
+document.querySelectorAll('#approach-chips .ch').forEach(c=>c.classList.toggle('on',['Conceptual','Mixed-Conceptual','Mixed','Mixed-Concept','Alternative'].includes(c.dataset.val)));
+['board-chips','adm-chips','loc-chips','conf-chips'].forEach(id=>{document.querySelectorAll('#'+id+' .ch').forEach(c=>c.classList.toggle('on',c.dataset.val==='ALL'))});
+updateWeightVis();
+render();
+}
+
+init();
+</script>
+</body>
+</html>
